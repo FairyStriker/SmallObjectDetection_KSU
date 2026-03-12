@@ -8,7 +8,14 @@ class SwinStage0(nn.Module):
     def __init__(self, weight_path):
         super().__init__()
         self.swin = timm.create_model('swin_tiny_patch4_window7_224', pretrained=False, features_only=True)
-        self.swin.load_state_dict(torch.load(weight_path, map_location='cpu'), strict=False)
+        
+        # FutureWarning (경고문) 안 뜨게 weights_only=True 추가
+        try:
+            state_dict = torch.load(weight_path, map_location='cpu', weights_only=True)
+        except Exception:
+            state_dict = torch.load(weight_path, map_location='cpu')
+            
+        self.swin.load_state_dict(state_dict, strict=False)
         
         # [핵심] 기존 15에폭 동안 똑똑해진 뇌가 망가지지 않도록 얼림(Freeze)
         for param in self.swin.parameters():
@@ -48,10 +55,10 @@ def inject_swin(model, weight_path):
     s1.i, s1.f, s1.type = 1, -1, 'SwinStage1'
     s2.i, s2.f, s2.type = 2, -1, 'SwinStage2'
 
-    # 몸통 강제 결합
-    model.model.model[0] = s0
-    model.model.model[1] = s1
-    model.model.model[2] = s2
+    # 🚨 오류 수정 완료: model.model.model[0] -> model.model[0] 으로 수정 
+    model.model[0] = s0
+    model.model[1] = s1
+    model.model[2] = s2
     print("✅ 수술 대성공! 완벽하게 결합되었습니다.")
     return model
 
@@ -59,19 +66,18 @@ def main():
     # 1. 방금 만든 커스텀 껍데기(yaml) 불러오기
     model = YOLO('yolov8_swin.yaml')
 
-    # 2. 1단계에서 15에폭 완성한 가중치 파일 이름 입력 (🚨 정확한 파일명 확인!)
+    # 2. 1단계에서 15에폭 완성한 가중치 파일 결합
     WEIGHT_PATH = 'swin_dino_ep15.pth' 
     model.model = inject_swin(model.model, WEIGHT_PATH)
 
     # 3. 본격적인 학습 시작!
     print("🔥 YOLOv8 파인튜닝을 시작합니다...")
     model.train(
-        # 🚨 데이터셋 폴더 경로 (이전에 만드신 data.yaml의 절대 경로 입력)
-        data='/home/user-511/dataset/data.yaml', 
-        epochs=50,      # 파인튜닝은 50에폭 정도면 충분합니다
-        imgsz=224,      # Swin 모델 고정 해상도
+        data='/home/user-511/dataset/data.yaml', # 승진님 데이터셋 경로
+        epochs=50,      
+        imgsz=224,      
         batch=16,
-        device=0,       # 듀얼 GPU 병렬 충돌(Pickle Error) 방지를 위해 GPU 0번만 사용 (백본을 얼려둬서 1개로도 엄청 빠릅니다)
+        device=0,       
         optimizer='AdamW',
         lr0=0.001
     )
