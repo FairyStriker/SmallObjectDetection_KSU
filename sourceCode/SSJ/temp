@@ -1,0 +1,231 @@
+(SOD_env) user-511@z640:~/small_object_detect/Merged_Dataset$ python train_swin_yolo.py 
+WARNING ⚠️ no model scale passed. Assuming scale='n'.
+🧠 YOLOv8 몸통에 Swin Backbone(DINO) 이식 수술을 시작합니다...
+✅ 수술 대성공! 완벽하게 결합되었습니다.
+🔥 YOLOv8 파인튜닝을 시작합니다...
+New https://pypi.org/project/ultralytics/8.4.22 available 😃 Update with 'pip install -U ultralytics'
+Ultralytics 8.4.21 🚀 Python-3.8.10 torch-2.4.1+cu118 CUDA:0 (Quadro P5000, 15238MiB)
+                                                     CUDA:1 (Quadro P5000, 15246MiB)
+engine/trainer: agnostic_nms=False, amp=True, angle=1.0, augment=False, auto_augment=randaugment, batch=32, bgr=0.0, box=7.5, cache=False, cfg=None, classes=None, close_mosaic=10, cls=0.5, compile=False, conf=None, copy_paste=0.0, copy_paste_mode=flip, cos_lr=False, cutmix=0.0, data=/home/user-511/small_object_detect/Merged_Dataset/data.yaml, degrees=0.0, deterministic=True, device=0,1, dfl=1.5, dnn=False, dropout=0.0, dynamic=False, embed=None, end2end=None, epochs=100, erasing=0.4, exist_ok=False, fliplr=0.5, flipud=0.0, format=torchscript, fraction=1.0, freeze=None, half=False, hsv_h=0.015, hsv_s=0.7, hsv_v=0.4, imgsz=640, int8=False, iou=0.7, keras=False, kobj=1.0, line_width=None, lr0=0.0001, lrf=0.01, mask_ratio=4, max_det=300, mixup=0.0, mode=train, model=yolov8_swin.yaml, momentum=0.937, mosaic=1.0, multi_scale=0.0, name=train, nbs=64, nms=False, opset=None, optimize=False, optimizer=AdamW, overlap_mask=True, patience=100, perspective=0.0, plots=True, pose=12.0, pretrained=True, profile=False, project=None, rect=False, resume=False, retina_masks=False, rle=1.0, save=True, save_conf=False, save_crop=False, save_dir=/home/user-511/small_object_detect/Merged_Dataset/runs/detect/train, save_frames=False, save_json=False, save_period=-1, save_txt=False, scale=0.5, seed=0, shear=0.0, show=False, show_boxes=True, show_conf=True, show_labels=True, simplify=True, single_cls=False, source=None, split=val, stream_buffer=False, task=detect, time=None, tracker=botsort.yaml, translate=0.1, val=True, verbose=True, vid_stride=1, visualize=False, warmup_bias_lr=0.1, warmup_epochs=3.0, warmup_momentum=0.8, weight_decay=0.0005, workers=8, workspace=None
+WARNING ⚠️ no model scale passed. Assuming scale='n'.
+
+                   from  n    params  module                                       arguments                     
+  0                  -1  1      5568  ultralytics.nn.modules.conv.Conv             [3, 192, 3, 2]                
+  1                  -1  1    664320  ultralytics.nn.modules.conv.Conv             [192, 384, 3, 2]              
+  2                  -1  1   2655744  ultralytics.nn.modules.conv.Conv             [384, 768, 3, 2]              
+  3                  -1  1         0  torch.nn.modules.upsampling.Upsample         [None, 2, 'nearest']          
+  4             [-1, 1]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           
+  5                  -1  3   2805504  ultralytics.nn.modules.block.C2f             [1152, 384, 3]                
+  6                  -1  1         0  torch.nn.modules.upsampling.Upsample         [None, 2, 'nearest']          
+  7             [-1, 0]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           
+  8                  -1  3    702336  ultralytics.nn.modules.block.C2f             [576, 192, 3]                 
+  9                  -1  1    332160  ultralytics.nn.modules.conv.Conv             [192, 192, 3, 2]              
+ 10             [-1, 5]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           
+ 11                  -1  3   2584320  ultralytics.nn.modules.block.C2f             [576, 384, 3]                 
+ 12                  -1  1   1327872  ultralytics.nn.modules.conv.Conv             [384, 384, 3, 2]              
+ 13             [-1, 2]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           
+ 14                  -1  3  10329600  ultralytics.nn.modules.block.C2f             [1152, 768, 3]                
+ 15         [8, 11, 14]  1   4223854  ultralytics.nn.modules.head.Detect           [10, 16, None, [192, 384, 768]]
+YOLOv8_swin summary: 112 layers, 25,631,278 parameters, 25,631,262 gradients, 916.2 GFLOPs
+
+DDP: debug command /home/user-511/miniconda3/envs/SOD_env/bin/python -m torch.distributed.run --nproc_per_node 2 --master_port 60597 /home/user-511/.config/Ultralytics/DDP/_temp_ek67jrbb139779080140544.py
+Ultralytics 8.4.21 🚀 Python-3.8.10 torch-2.4.1+cu118 CUDA:0 (Quadro P5000, 15238MiB)
+                                                     CUDA:1 (Quadro P5000, 15246MiB)
+WARNING ⚠️ no model scale passed. Assuming scale='n'.
+Freezing layer 'model.15.dfl.conv.weight'
+AMP: running Automatic Mixed Precision (AMP) checks...
+AMP: checks passed ✅
+train: Fast image access ✅ (ping: 0.0±0.0 ms, read: 363.9±174.2 MB/s, size: 587.3 KB)
+train: Scanning /home/user-511/small_object_detect/Merged_Dataset/labels/train... 161381 images, 0 backgrounds, 0 corrupt: 100% ━━━━━━━━━━━━ 161381/161381 888.8it/s 3:02
+train: New cache created: /home/user-511/small_object_detect/Merged_Dataset/labels/train.cache
+val: Fast image access ✅ (ping: 0.0±0.0 ms, read: 636.8±190.8 MB/s, size: 694.1 KB)
+val: Scanning /home/user-511/small_object_detect/Merged_Dataset/labels/val... 10086 images, 0 backgrounds, 0 corrupt: 100% ━━━━━━━━━━━━ 10086/10086 1.0Kit/s 10.1s
+val: New cache created: /home/user-511/small_object_detect/Merged_Dataset/labels/val.cache
+optimizer: AdamW(lr=0.0001, momentum=0.937) with parameter groups 49 weight(decay=0.0), 56 weight(decay=0.0005), 55 bias(decay=0.0)
+Plotting labels to /home/user-511/small_object_detect/Merged_Dataset/runs/detect/train/labels.jpg... 
+Image sizes 640 train, 640 val
+Using 16 dataloader workers
+Logging results to /home/user-511/small_object_detect/Merged_Dataset/runs/detect/train
+Starting training for 100 epochs...
+
+      Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size
+: 0% ──────────── 0/5044  0.8s
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/home/user-511/.config/Ultralytics/DDP/_temp_ek67jrbb139779080140544.py", line 14, in <module>
+[rank0]:     results = trainer.train()
+[rank0]:   File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/site-packages/ultralytics/engine/trainer.py", line 244, in train
+[rank0]:     self._do_train()
+[rank0]:   File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/site-packages/ultralytics/engine/trainer.py", line 436, in _do_train
+[rank0]:     loss, self.loss_items = self.model(batch)
+[rank0]:   File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1553, in _wrapped_call_impl
+[rank0]:     return self._call_impl(*args, **kwargs)
+[rank0]:   File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1562, in _call_impl
+[rank0]:     return forward_call(*args, **kwargs)
+[rank0]:   File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/site-packages/torch/nn/parallel/distributed.py", line 1636, in forward
+[rank0]:     else self._run_ddp_forward(*inputs, **kwargs)
+[rank0]:   File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/site-packages/torch/nn/parallel/distributed.py", line 1454, in _run_ddp_forward
+[rank0]:     return self.module(*inputs, **kwargs)  # type: ignore[index]
+[rank0]:   File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1553, in _wrapped_call_impl
+[rank0]:     return self._call_impl(*args, **kwargs)
+[rank0]:   File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1562, in _call_impl
+[rank0]:     return forward_call(*args, **kwargs)
+[rank0]:   File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/site-packages/ultralytics/nn/tasks.py", line 141, in forward
+[rank0]:     return self.loss(x, *args, **kwargs)
+[rank0]:   File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/site-packages/ultralytics/nn/tasks.py", line 334, in loss
+[rank0]:     preds = self.forward(batch["img"])
+[rank0]:   File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/site-packages/ultralytics/nn/tasks.py", line 142, in forward
+[rank0]:     return self.predict(x, *args, **kwargs)
+[rank0]:   File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/site-packages/ultralytics/nn/tasks.py", line 159, in predict
+[rank0]:     return self._predict_once(x, profile, visualize, embed)
+[rank0]:   File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/site-packages/ultralytics/nn/tasks.py", line 181, in _predict_once
+[rank0]:     x = m(x)  # run
+[rank0]:   File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1553, in _wrapped_call_impl
+[rank0]:     return self._call_impl(*args, **kwargs)
+[rank0]:   File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1562, in _call_impl
+[rank0]:     return forward_call(*args, **kwargs)
+[rank0]:   File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/site-packages/ultralytics/nn/modules/conv.py", line 641, in forward
+[rank0]:     return torch.cat(x, self.d)
+[rank0]: torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 3.52 GiB. GPU 0 has a total capacity of 14.88 GiB of which 2.48 GiB is free. Including non-PyTorch memory, this process has 12.14 GiB memory in use. Of the allocated memory 11.73 GiB is allocated by PyTorch, and 212.38 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Exception in thread Thread-25:
+Traceback (most recent call last):
+  File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/threading.py", line 932, in _bootstrap_inner
+    self.run()
+  File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/threading.py", line 870, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/site-packages/torch/utils/data/_utils/pin_memory.py", line 55, in _pin_memory_loop
+    do_one_step()
+  File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/site-packages/torch/utils/data/_utils/pin_memory.py", line 32, in do_one_step
+    r = in_queue.get(timeout=MP_STATUS_CHECK_INTERVAL)
+  File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/multiprocessing/queues.py", line 116, in get
+    return _ForkingPickler.loads(res)
+  File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/site-packages/torch/multiprocessing/reductions.py", line 496, in rebuild_storage_fd
+    fd = df.detach()
+  File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/multiprocessing/resource_sharer.py", line 57, in detach
+    with _resource_sharer.get_connection(self._id) as conn:
+  File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/multiprocessing/resource_sharer.py", line 87, in get_connection
+    c = Client(address, authkey=process.current_process().authkey)
+  File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/multiprocessing/connection.py", line 508, in Client
+    answer_challenge(c, authkey)
+  File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/multiprocessing/connection.py", line 752, in answer_challenge
+    message = connection.recv_bytes(256)         # reject large message
+  File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/multiprocessing/connection.py", line 216, in recv_bytes
+    buf = self._recv_bytes(maxlength)
+  File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
+    chunk = read(handle, remaining)
+ConnectionResetError: [Errno 104] Connection reset by peer
+[rank1]: Traceback (most recent call last):
+[rank1]:   File "/home/user-511/.config/Ultralytics/DDP/_temp_ek67jrbb139779080140544.py", line 14, in <module>
+[rank1]:     results = trainer.train()
+[rank1]:   File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/site-packages/ultralytics/engine/trainer.py", line 244, in train
+[rank1]:     self._do_train()
+[rank1]:   File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/site-packages/ultralytics/engine/trainer.py", line 436, in _do_train
+[rank1]:     loss, self.loss_items = self.model(batch)
+[rank1]:   File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1553, in _wrapped_call_impl
+[rank1]:     return self._call_impl(*args, **kwargs)
+[rank1]:   File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1562, in _call_impl
+[rank1]:     return forward_call(*args, **kwargs)
+[rank1]:   File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/site-packages/torch/nn/parallel/distributed.py", line 1636, in forward
+[rank1]:     else self._run_ddp_forward(*inputs, **kwargs)
+[rank1]:   File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/site-packages/torch/nn/parallel/distributed.py", line 1454, in _run_ddp_forward
+[rank1]:     return self.module(*inputs, **kwargs)  # type: ignore[index]
+[rank1]:   File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1553, in _wrapped_call_impl
+[rank1]:     return self._call_impl(*args, **kwargs)
+[rank1]:   File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1562, in _call_impl
+[rank1]:     return forward_call(*args, **kwargs)
+[rank1]:   File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/site-packages/ultralytics/nn/tasks.py", line 141, in forward
+[rank1]:     return self.loss(x, *args, **kwargs)
+[rank1]:   File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/site-packages/ultralytics/nn/tasks.py", line 334, in loss
+[rank1]:     preds = self.forward(batch["img"])
+[rank1]:   File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/site-packages/ultralytics/nn/tasks.py", line 142, in forward
+[rank1]:     return self.predict(x, *args, **kwargs)
+[rank1]:   File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/site-packages/ultralytics/nn/tasks.py", line 159, in predict
+[rank1]:     return self._predict_once(x, profile, visualize, embed)
+[rank1]:   File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/site-packages/ultralytics/nn/tasks.py", line 181, in _predict_once
+[rank1]:     x = m(x)  # run
+[rank1]:   File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1553, in _wrapped_call_impl
+[rank1]:     return self._call_impl(*args, **kwargs)
+[rank1]:   File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1562, in _call_impl
+[rank1]:     return forward_call(*args, **kwargs)
+[rank1]:   File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/site-packages/ultralytics/nn/modules/conv.py", line 641, in forward
+[rank1]:     return torch.cat(x, self.d)
+[rank1]: torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 3.52 GiB. GPU 1 has a total capacity of 14.89 GiB of which 2.79 GiB is free. Including non-PyTorch memory, this process has 12.08 GiB memory in use. Of the allocated memory 11.69 GiB is allocated by PyTorch, and 223.75 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Exception in thread Thread-2:
+Traceback (most recent call last):
+  File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/threading.py", line 932, in _bootstrap_inner
+    self.run()
+  File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/threading.py", line 870, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/site-packages/torch/utils/data/_utils/pin_memory.py", line 55, in _pin_memory_loop
+    do_one_step()
+  File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/site-packages/torch/utils/data/_utils/pin_memory.py", line 32, in do_one_step
+    r = in_queue.get(timeout=MP_STATUS_CHECK_INTERVAL)
+  File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/multiprocessing/queues.py", line 116, in get
+    return _ForkingPickler.loads(res)
+  File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/site-packages/torch/multiprocessing/reductions.py", line 496, in rebuild_storage_fd
+    fd = df.detach()
+  File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/multiprocessing/resource_sharer.py", line 57, in detach
+    with _resource_sharer.get_connection(self._id) as conn:
+  File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/multiprocessing/resource_sharer.py", line 87, in get_connection
+    c = Client(address, authkey=process.current_process().authkey)
+  File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/multiprocessing/connection.py", line 508, in Client
+    answer_challenge(c, authkey)
+  File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/multiprocessing/connection.py", line 752, in answer_challenge
+    message = connection.recv_bytes(256)         # reject large message
+  File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/multiprocessing/connection.py", line 216, in recv_bytes
+    buf = self._recv_bytes(maxlength)
+  File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
+    chunk = read(handle, remaining)
+ConnectionResetError: [Errno 104] Connection reset by peer
+W0316 19:10:51.228426 140285387932480 torch/distributed/elastic/multiprocessing/api.py:858] Sending process 4784 closing signal SIGTERM
+E0316 19:10:51.448063 140285387932480 torch/distributed/elastic/multiprocessing/api.py:833] failed (exitcode: 1) local_rank: 0 (pid: 4783) of binary: /home/user-511/miniconda3/envs/SOD_env/bin/python
+Traceback (most recent call last):
+  File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/runpy.py", line 194, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+  File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/site-packages/torch/distributed/run.py", line 905, in <module>
+    main()
+  File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 348, in wrapper
+    return f(*args, **kwargs)
+  File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/site-packages/torch/distributed/run.py", line 901, in main
+    run(args)
+  File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/site-packages/torch/distributed/run.py", line 892, in run
+    elastic_launch(
+  File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/site-packages/torch/distributed/launcher/api.py", line 133, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/site-packages/torch/distributed/launcher/api.py", line 264, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+/home/user-511/.config/Ultralytics/DDP/_temp_ek67jrbb139779080140544.py FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2026-03-16_19:10:51
+  host      : z640
+  rank      : 0 (local_rank: 0)
+  exitcode  : 1 (pid: 4783)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================
+Traceback (most recent call last):
+  File "train_swin_yolo.py", line 86, in <module>
+    main()
+  File "train_swin_yolo.py", line 75, in main
+    model.train(
+  File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/site-packages/ultralytics/engine/model.py", line 777, in train
+    self.trainer.train()
+  File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/site-packages/ultralytics/engine/trainer.py", line 239, in train
+    raise e
+  File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/site-packages/ultralytics/engine/trainer.py", line 237, in train
+    subprocess.run(cmd, check=True)
+  File "/home/user-511/miniconda3/envs/SOD_env/lib/python3.8/subprocess.py", line 516, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['/home/user-511/miniconda3/envs/SOD_env/bin/python', '-m', 'torch.distributed.run', '--nproc_per_node', '2', '--master_port', '60597', '/home/user-511/.config/Ultralytics/DDP/_temp_ek67jrbb139779080140544.py']' returned non-zero exit status 1.
