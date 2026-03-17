@@ -73,13 +73,13 @@ def main():
     # 3. 본격적인 학습 시작!
     print("🔥 YOLOv8 파인튜닝을 시작합니다...")
     model.train(
-        data='/home/user-511/dataset/data.yaml', # 승진님 데이터셋 경로
+        data='/home/user-511/dataset/data.yaml', # 데이터셋 경로
         epochs=50,      
-        imgsz=224,      
-        batch=16,
+        imgsz=640    
+        batch=8,
         device=0,       
         optimizer='AdamW',
-        lr0=0.001
+        lr0=0.0001
     )
 
 if __name__ == '__main__':
