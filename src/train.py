@@ -105,7 +105,7 @@ def main():
     optimizer = optim.AdamW(student.parameters(), lr=0.00005, weight_decay=0.04)
     scaler = torch.amp.GradScaler('cuda')
 
-    epochs = 15 
+    epochs = 14 
     print("🔥 모드 콜랩스 방지 코드 적용 완료! 16만 장 듀얼 GPU 집중 학습을 시작합니다...")
 
     for epoch in range(epochs):
