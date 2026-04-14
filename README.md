@@ -104,10 +104,10 @@ DINO는 분류 레이블 없이 **이미지 내 구조적 패턴**을 스스로 
 │           ▼                                             │
 │       Student 역전파 → Teacher EMA 업데이트              │
 │                                                         │
-│  ✓ 15 에폭 학습 후 Swin 백본 가중치만 저장               │
+│  ✓ 14 에폭 학습 후 Swin 백본 가중치만 저장               │
 │    (DINOHead는 임시 교사 역할 후 폐기)                   │
 └─────────────────────────────────────────────────────────┘
-            │  swin_dino_ep15.pth
+            │  swin_dino_ep14.pth
             ▼
 ┌─────────────────────────────────────────────────────────┐
 │  Stage 2 · YOLOv8 파인튜닝 (src/train_swin_yolo.py)      │
@@ -183,7 +183,7 @@ if torch.cuda.device_count() > 1:
 ```
 
 `torch.amp.autocast` + `GradScaler`로 혼합 정밀도(AMP) 학습을 사용하며,
-듀얼 Quadro P5000 환경에서 16만 장 × 15 에폭을 학습했습니다.
+듀얼 Quadro P5000 환경에서 16만 장 × 14 에폭을 학습했습니다.
 
 ### Weight Saving
 
@@ -294,7 +294,7 @@ SmallObjectDetection_KSU/
 │   └── samples/               ·  검증 배치 라벨/예측 시각화
 │
 └── logs/                      ← 학습 로그 (재현 검증용)
-    ├── pretrain.log           ·  Stage 1 DINO 사전학습 로그 (15 epoch)
+    ├── pretrain.log           ·  Stage 1 DINO 사전학습 로그 (14 epoch)
     ├── finetune.log           ·  Stage 2 YOLOv8 파인튜닝 로그 (50 epoch)
     └── 640Finetuning.log      ·  imgsz=640 재학습 로그
 ```
@@ -316,7 +316,7 @@ pip install torch torchvision timm ultralytics
 ```bash
 # src/train.py 내 IMAGE_DIR 경로를 실제 데이터 폴더로 수정
 python src/train.py
-# → swin_dino_ep2.pth, ep4.pth, ... ep15.pth 생성
+# → swin_dino_ep2.pth, ep4.pth, ... ep14.pth 생성
 ```
 
 ### 3. 동작 확인 (Sanity Check)
@@ -374,7 +374,7 @@ python src/benchmark_engine.py
 | `weight_decay` | 0.04 | AdamW 정규화 |
 | `teacher_momentum` | 0.996 | Teacher EMA 안정성 |
 | `max_norm` | 3.0 | Gradient Clipping |
-| `epochs` | 15 | 사전학습 에폭 |
+| `epochs` | 14 | 사전학습 에폭 |
 | `batch_size` | 16 | 듀얼 GPU 기준 |
 | `global_size` | 224 | 글로벌 크롭 크기 |
 | `local_size` | 224 | 로컬 크롭 출력 크기 (소형 객체 확대) |
