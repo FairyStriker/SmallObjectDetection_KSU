@@ -1,3 +1,7 @@
+import sys
+import os
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
+
 from PIL import Image
 from data_aug import DINOSmallObjectAugmentation
 from model import MultiCropSwinDINO
