@@ -1,0 +1,33 @@
+======================================================================
+  YOLOv8 TensorRT Engine Benchmark Results
+  Date: 2026-04-14 15:22:29
+======================================================================
+
+[Overall Metrics]
+  Precision:       0.9817
+  Recall:          0.9764
+  F1 Score:        0.9790
+  mAP@50:          0.9861
+  mAP@50-95:       0.8673
+
+[Inference Speed]
+  Preprocess:      1.96 ms
+  Inference:       116.89 ms
+  Postprocess:     4.34 ms
+  Total:           123.19 ms
+  FPS:             8.12
+
+[Per-Class Metrics]
+  Class                    mAP@50    mAP@50-95
+  -------------------- ---------- ------------
+  Fishing_Boat             0.9941       0.8773
+  Merchant_Ship            0.9875       0.9068
+  Warship                  0.9944       0.9258
+  Person                   0.9319       0.5765
+  Bird                     0.9781       0.7603
+  Fixed_Wing               0.9950       0.9377
+  Rotary_Wing              0.9950       0.9564
+  UAV                      0.9950       0.8891
+  Leaflet                  0.9950       0.8832
+  Trash_Bomb               0.9950       0.9593
+======================================================================

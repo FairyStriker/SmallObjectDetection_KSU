@@ -8,40 +8,51 @@
   <img src="https://img.shields.io/badge/Ultralytics-YOLOv8-00FFFF?logo=yolo&logoColor=black" alt="YOLOv8">
   <img src="https://img.shields.io/badge/Backbone-Swin--Tiny-7B68EE" alt="Swin">
   <img src="https://img.shields.io/badge/SSL-DINO-FF6F61" alt="DINO">
-  <img src="https://img.shields.io/badge/Status-Training%20in%20Progress-orange" alt="Status">
+  <img src="https://img.shields.io/badge/Status-Completed-brightgreen" alt="Status">
   <img src="https://img.shields.io/badge/Classes-10-blue" alt="Classes">
+  <img src="https://img.shields.io/badge/Deploy-Jetson%20Orin%20Nano-76B900?logo=nvidia&logoColor=white" alt="Jetson">
+  <img src="https://img.shields.io/badge/Engine-TensorRT%20FP16-76B900" alt="TensorRT">
 </p>
 
 ---
 
 ## 📊 Results — 학습 결과
 
-> 🚧 **현재 `imgsz=640` 으로 재학습 진행 중입니다.**
-> 학습이 완료되는 대로 본 섹션에 전체 / 클래스별 mAP 결과가 추가될 예정입니다.
+> 📍 **아래 모든 결과는 [NVIDIA Jetson Orin Nano (Super) 8GB](benchmark/README.md) 에서
+> TensorRT FP16 엔진으로 변환한 뒤 측정한 값입니다.**
+> 자세한 벤치마크 환경·곡선·샘플 예측은 [`benchmark/README.md`](benchmark/README.md) 참조.
 
-### Overall (Validation)
+### Overall (Validation — Jetson Orin Nano, TensorRT FP16)
 
-| Metric        | Value |
-|---------------|-------|
-| Precision     | _TBD_ |
-| Recall        | _TBD_ |
-| mAP@0.5       | _TBD_ |
-| mAP@0.5–0.95  | _TBD_ |
+| Metric        | Value      |
+|---------------|-----------:|
+| Precision     | **0.9817** |
+| Recall        | **0.9764** |
+| F1 Score      | **0.9790** |
+| mAP@0.5       | **0.9861** |
+| mAP@0.5–0.95  | **0.8673** |
+
+### Inference Speed (Jetson Orin Nano · `MAXN_SUPER` · `imgsz=640`, `batch=1`)
+
+| Preprocess | Inference | Postprocess | Total | FPS |
+|-----------:|----------:|------------:|------:|----:|
+| 1.96 ms | **116.89 ms** | 4.34 ms | **123.19 ms** | **8.12** |
 
 ### Per-class Performance
 
-| Class           | Precision | Recall | mAP@0.5 | mAP@0.5–0.95 |
-|-----------------|-----------|--------|---------|--------------|
-| Fishing_Boat    | _TBD_ | _TBD_ | _TBD_ | _TBD_ |
-| Merchant_Ship   | _TBD_ | _TBD_ | _TBD_ | _TBD_ |
-| Warship         | _TBD_ | _TBD_ | _TBD_ | _TBD_ |
-| Person          | _TBD_ | _TBD_ | _TBD_ | _TBD_ |
-| Bird            | _TBD_ | _TBD_ | _TBD_ | _TBD_ |
-| Fixed_Wing      | _TBD_ | _TBD_ | _TBD_ | _TBD_ |
-| Rotary_Wing     | _TBD_ | _TBD_ | _TBD_ | _TBD_ |
-| UAV             | _TBD_ | _TBD_ | _TBD_ | _TBD_ |
-| Leaflet         | _TBD_ | _TBD_ | _TBD_ | _TBD_ |
-| Trash_Bomb      | _TBD_ | _TBD_ | _TBD_ | _TBD_ |
+| Class           | mAP@0.5   | mAP@0.5–0.95 |
+|-----------------|----------:|-------------:|
+| Fishing_Boat    | 0.9941 | 0.8773 |
+| Merchant_Ship   | 0.9875 | 0.9068 |
+| Warship         | 0.9944 | 0.9258 |
+| Person          | 0.9319 | 0.5765 |
+| Bird            | 0.9781 | 0.7603 |
+| Fixed_Wing      | 0.9950 | 0.9377 |
+| Rotary_Wing     | 0.9950 | 0.9564 |
+| UAV             | 0.9950 | 0.8891 |
+| Leaflet         | 0.9950 | 0.8832 |
+| Trash_Bomb      | 0.9950 | 0.9593 |
+| **All (mean)**  | **0.9861** | **0.8673** |
 
 ---
 
@@ -262,18 +273,30 @@ SmallObjectDetection_KSU/
 ├── .gitattributes             ← Git LFS 설정
 ├── .gitignore
 │
-├── src/                       ← 학습 / 추론 코드
+├── src/                       ← 학습 / 추론 / 배포 코드
+│   ├── README.md              ·  src 파일별 역할 요약
 │   ├── model.py               ·  MultiCropSwinDINO (Swin + DINOHead)
 │   ├── data_aug.py            ·  멀티크롭 증강 (Global ×2 + Local ×6)
 │   ├── train.py               ·  Stage 1 — DINO 자기지도 사전학습
 │   ├── train_swin_yolo.py     ·  Stage 2 — YOLOv8 파인튜닝 + 백본 이식
 │   ├── yolov8_swin.yaml       ·  YOLOv8 커스텀 구조 (더미 백본 + Neck/Head)
+│   ├── export_tensorrt.py     ·  .pt → TensorRT FP16 엔진 변환 (Jetson)
+│   └── benchmark_engine.py    ·  TensorRT 엔진 벤치마크 스크립트
+│
+├── test/                      ← 테스트 / 점검 코드
 │   ├── sanity_check.py        ·  멀티크롭 + 모델 동작 확인
 │   └── test_model.py          ·  학습된 best.pt 추론 테스트
 │
+├── benchmark/                 ← Jetson Orin Nano 벤치마크 결과
+│   ├── README.md              ·  환경 / 지표 / 곡선 / 샘플 예측
+│   ├── benchmark_result.txt   ·  원본 출력
+│   ├── curves/                ·  PR · F1 · P · R · Confusion Matrix
+│   └── samples/               ·  검증 배치 라벨/예측 시각화
+│
 └── logs/                      ← 학습 로그 (재현 검증용)
     ├── pretrain.log           ·  Stage 1 DINO 사전학습 로그 (15 epoch)
-    └── finetune.log           ·  Stage 2 YOLOv8 파인튜닝 로그 (50 epoch)
+    ├── finetune.log           ·  Stage 2 YOLOv8 파인튜닝 로그 (50 epoch)
+    └── 640Finetuning.log      ·  imgsz=640 재학습 로그
 ```
 
 ---
@@ -299,7 +322,7 @@ python src/train.py
 ### 3. 동작 확인 (Sanity Check)
 
 ```bash
-python src/sanity_check.py
+python test/sanity_check.py
 # 정상 출력 예시 → "모델 최종 출력 형태: [8, 65536]"
 ```
 
@@ -314,8 +337,25 @@ python src/train_swin_yolo.py
 ### 5. 추론 테스트
 
 ```bash
-python src/test_model.py
+python test/test_model.py
 # → runs/detect/predict/ 폴더에 결과 이미지 저장
+```
+
+### 6. Jetson Orin Nano 배포 — TensorRT FP16 변환 & 벤치마크
+
+> ⚠️ TensorRT 엔진은 **디바이스 종속적**이므로 반드시 **Jetson Orin Nano에서 직접** 변환해야 합니다.
+
+```bash
+# (Jetson Orin Nano) best.pt → best.engine (FP16)
+python src/export_tensorrt.py --weights runs/detect/train/weights/best.pt --imgsz 640 --workspace 4
+
+# 전원 모드 최대화
+sudo nvpmodel -m 2
+sudo jetson_clocks
+
+# 벤치마크 실행
+python src/benchmark_engine.py
+# → benchmark_result.txt 생성 (결과는 benchmark/README.md 참조)
 ```
 
 ---
