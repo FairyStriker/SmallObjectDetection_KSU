@@ -28,7 +28,6 @@ class UnlabeledImageDataset(Dataset):
 
 # --- 2. DINO Loss ---
 class DINOLoss(nn.Module):
-    # [수정 포인트 1] teacher_temp 기본값을 0.07로 올려서 모델의 꼼수 차단
     def __init__(self, out_dim, student_temp=0.1, teacher_temp=0.07, center_momentum=0.9):
         super().__init__()
         self.student_temp = student_temp
@@ -79,7 +78,7 @@ def main():
     OUT_DIM = 8192 
     transform = DINOSmallObjectAugmentation(global_size=224, local_size=224, local_crops_number=6)
     
-    # 🚨 여기에 우분투 환경의 16만 장 이미지 폴더 경로를 입력하세요! (예: /home/user/DATA/images)
+    # 🚨 여기에 이미지 폴더 경로를 입력하세요! (예: /home/user/DATA/images)
     IMAGE_DIR = "여기에_폴더_경로를_적어주세요" 
     
     dataset = UnlabeledImageDataset(image_dir=IMAGE_DIR, transform=transform)
@@ -101,12 +100,11 @@ def main():
 
     dino_loss = DINOLoss(out_dim=OUT_DIM, teacher_temp=0.07).to(device)
     
-    # [수정 포인트 2] 학습률을 0.00005 로 대폭 낮춰서 기존 백본의 뇌가 망가지는 것을 방지
     optimizer = optim.AdamW(student.parameters(), lr=0.00005, weight_decay=0.04)
     scaler = torch.amp.GradScaler('cuda')
 
     epochs = 14 
-    print("🔥 모드 콜랩스 방지 코드 적용 완료! 16만 장 듀얼 GPU 집중 학습을 시작합니다...")
+    print(f"🔥 모드 콜랩스 방지 코드 적용 완료! {len(dataset)}장 GPU 집중 학습을 시작합니다...")
 
     for epoch in range(epochs):
         for it, images in enumerate(data_loader): 
@@ -140,8 +138,10 @@ def main():
         # 2 에폭마다 가중치 저장
         if (epoch + 1) % 2 == 0:
             save_path = f"swin_dino_ep{epoch+1}.pth"
-            torch.save(student.module.backbone.state_dict(), save_path)
-            print(f"💾 모델 저장 완료: {save_path}")
+            # DataParallel 래핑 여부에 안전하게 대응
+            teacher_model = teacher.module if isinstance(teacher, nn.DataParallel) else teacher
+            torch.save(teacher_model.backbone.state_dict(), save_path)
+            print(f"💾 Teacher 백본 저장 완료: {save_path}")
 
 if __name__ == '__main__':
     main()
